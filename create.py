@@ -10,17 +10,27 @@ def handle(event, context):
     request_body = __extract_body_as_json(event)
 
     parameters = request_body['parameters']
-    print(table)
 
-    response = {
-        "statusCode": 200,
-        "body": json.dumps({
-            "table": table,
-            "parameters": parameters
-        })
+    db_response = db.put_item(
+        TableName=table,
+        Item={
+            'parameters': {
+                'S': json.dumps(parameters)
+            },
+            'user': {
+                'S': 'user123'
+            }
+        },
+        ReturnValues='ALL_OLD'
+    )
+
+    response_body = {
+        "table": table,
+        "parameters": parameters,
+        "insertResponse": db_response
     }
 
-    return response
+    return __assemble_response(200, response_body)
 
 
 def __extract_body_as_json(event):
@@ -31,3 +41,10 @@ def __extract_body_as_json(event):
             return {}
     else:
         return {}
+
+
+def __assemble_response(http_code, body):
+    return {
+        "statusCode": http_code,
+        "body": json.dumps(body)
+    }

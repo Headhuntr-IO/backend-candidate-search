@@ -12,9 +12,8 @@ provider:
   tracing:
     apiGateway: true
     lambda: true
-  # you can define service wide environment variables here
   environment:
-    CANDIDATE_SEARCH_TABLE_NAME: "PLACEHOLDER_TABLE_NAME"
+    CANDIDATE_SEARCH_TABLE_NAME: ${sls:stage}_user_search
 #    VAR2: ${param:VAR2}
 # you can add statements to the Lambda function's IAM Role here
 #  iam:
