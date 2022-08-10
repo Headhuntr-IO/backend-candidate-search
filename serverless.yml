@@ -13,8 +13,8 @@ provider:
     apiGateway: true
     lambda: true
   # you can define service wide environment variables here
-#  environment:
-#    APP_NAME: ${param:APP_NAME}
+  environment:
+    CANDIDATE_SEARCH_TABLE_NAME: "PLACEHOLDER_TABLE_NAME"
 #    VAR2: ${param:VAR2}
 # you can add statements to the Lambda function's IAM Role here
 #  iam:
@@ -58,7 +58,7 @@ functions:
 
 resources:
  Resources:
-   userSearchTable:
+  userSearchTable:
      Type: AWS::DynamoDB::Table
      Properties:
        TableName: ${sls:stage}_user_search
@@ -71,7 +71,10 @@ resources:
        ProvisionedThroughput:
          ReadCapacityUnits: 1
          WriteCapacityUnits: 1
-#  Outputs:
-#     NewOutput:
-#       Description: "Description for the output"
-#       Value: "Some output value"
+ Outputs:
+  CandidateSearchTableName:
+    Description: "The DynamoDB Table name for storing Candidate Search details"
+    Value:
+      Ref: userSearchTable
+    Export:
+      Name: !Sub "${AWS::StackName}-CandidateSearchTableName"
