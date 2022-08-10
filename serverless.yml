@@ -25,10 +25,9 @@ provider:
 
 
 
-# you can add packaging information here
-#package:
-#  patterns:
-#    - '!exclude-me.py'
+package:
+  patterns:
+    - '!README.md'
 #    - '!exclude-me-dir/**'
 #    - include-me.py
 #    - include-me-dir/**
