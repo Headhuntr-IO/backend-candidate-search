@@ -13,7 +13,7 @@ provider:
     apiGateway: true
     lambda: true
   environment:
-    CANDIDATE_SEARCH_TABLE_NAME: ${sls:stage}_user_search
+    CANDIDATE_SEARCH_TABLE_NAME: !Ref userSearchTable
   iam:
     role:
       statements:
