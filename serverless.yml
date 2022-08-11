@@ -9,8 +9,12 @@ frameworkVersion: '3'
 provider:
   name: aws
   runtime: python3.9
+  apiGateway:
+    restApiId:
+      'Fn::ImportValue': sls-${self:custom.sharedService}-${sls:stage}-PlatformAPIGateway-restApiId
+    restApiRootResourceId:
+      'Fn::ImportValue': sls-${self:custom.sharedService}-${sls:stage}-PlatformAPIGateway-rootResourceId
   tracing:
-    apiGateway: true
     lambda: true
   environment:
     CANDIDATE_SEARCH_TABLE_NAME: !Ref userSearchTable
@@ -23,14 +27,12 @@ provider:
           Resource:
             Fn::GetAtt: [ userSearchTable, Arn ]
 
-
+custom:
+  sharedService: shared
 
 package:
   patterns:
     - '!README.md'
-#    - '!exclude-me-dir/**'
-#    - include-me.py
-#    - include-me-dir/**
 
 functions:
   create:
@@ -39,6 +41,8 @@ functions:
       - http:
           method: POST
           path: /candidate-search
+    layers:
+      - 'Fn::ImportValue': sls-${self:custom.sharedService}-${sls:stage}-PythonsharedLambdaLayerQualifiedArn
 
 #    Define function environment variables here
 #    environment:
