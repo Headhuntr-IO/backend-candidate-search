@@ -1,7 +1,13 @@
 import json
 import os
 import boto3
+import requests
 from datetime import datetime
+
+from aws_xray_sdk.core import xray_recorder
+from aws_xray_sdk.core import patch_all
+
+patch_all()
 
 table = os.environ['CANDIDATE_SEARCH_TABLE_NAME']
 db = boto3.client('dynamodb')
@@ -35,10 +41,13 @@ def handle(event, context):
         ReturnValues='ALL_OLD'
     )
 
+    response_from_3rd_party = requests.get('https://api.publicapis.org/entries')
+
     response_body = {
         "table": table,
         "parameters": parameters,
-        "insertResponse": db_response
+        "insertResponse": db_response,
+        "entries": response_from_3rd_party.json()
     }
 
     return __assemble_response(200, response_body)
