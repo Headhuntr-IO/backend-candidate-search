@@ -27,8 +27,13 @@ provider:
           Resource:
             Fn::GetAtt: [ userSearchTable, Arn ]
 
+plugins:
+  - serverless-plugin-lambda-insights
+
 custom:
   sharedService: shared
+  lambdaInsights:
+    defaultLambdaInsights: true
 
 package:
   patterns:
