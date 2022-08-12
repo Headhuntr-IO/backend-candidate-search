@@ -11,8 +11,6 @@ provider:
   deploymentBucket:
     name: ${self:custom.deploymentBucketName}
   runtime: python3.9
-#  layers:
-#    - 'Fn::ImportValue': sls-${self:custom.sharedService}-${sls:stage}-PythonsharedLambdaLayerQualifiedArn
   apiGateway:
     restApiId:
       'Fn::ImportValue': sls-${self:custom.sharedService}-${sls:stage}-SFEOutputApiGatewayRestApiId
@@ -49,12 +47,12 @@ package:
 functions:
   create:
     handler: create.handle
+    layers:
+      - 'Fn::ImportValue': sls-${self:custom.sharedService}-${sls:stage}-PythonsharedLambdaLayerQualifiedArn
     events:
       - http:
           method: POST
           path: /candidate-search
-          layers:
-            - 'Fn::ImportValue': sls-${self:custom.sharedService}-${sls:stage}-PythonsharedLambdaLayerQualifiedArn
           request:
             schemas:
               application/json:
