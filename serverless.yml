@@ -8,12 +8,14 @@ frameworkVersion: '3'
 
 provider:
   name: aws
+  deploymentBucket:
+    name: ${self:custom.deploymentBucketName}
   runtime: python3.9
   apiGateway:
     restApiId:
-      'Fn::ImportValue': sls-${self:custom.sharedService}-${sls:stage}-PlatformAPIGateway-restApiId
+      'Fn::ImportValue': sls-${self:custom.sharedService}-${sls:stage}-SFEOutputApiGatewayRestApiId
     restApiRootResourceId:
-      'Fn::ImportValue': sls-${self:custom.sharedService}-${sls:stage}-PlatformAPIGateway-rootResourceId
+      'Fn::ImportValue': sls-${self:custom.sharedService}-${sls:stage}-SFEOutputApiGatewayRestApiRootResourceId
   tracing:
     lambda: true
   environment:
@@ -29,9 +31,11 @@ provider:
 
 plugins:
   - serverless-plugin-lambda-insights
+  - serverless-deployment-bucket
 
 custom:
   sharedService: shared
+  deploymentBucketName: hhv2.deployment.artifacts
   lambdaInsights:
     defaultLambdaInsights: true
 
