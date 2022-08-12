@@ -1,0 +1,17 @@
+{
+  "definitions": {},
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "title": "A persistent search criteria",
+  "required": ["parameters"],
+  "properties": {
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "jobTitle": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

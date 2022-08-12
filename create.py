@@ -16,6 +16,8 @@ db = boto3.client('dynamodb')
 def handle(event, context):
     request_body = __extract_body_as_json(event)
 
+    print(json.dumps(request_body, indent=2))
+
     parameters = request_body['parameters']
 
     user_id = 'user1234'
